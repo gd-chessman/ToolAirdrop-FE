@@ -1,0 +1,25 @@
+@import './base.css';
+@import "primeicons/primeicons.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+#app {
+  font-weight: normal;
+}
+
+/* Custom scrollbar for dark backgrounds */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3b82f6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
