@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../components/pages/HomePage.vue";
-import AirdropDetail from "../components/pages/AirdropDetail.vue";
-import Tools from "../components/pages/Tools.vue";
-import Pricing from "../components/pages/Pricing.vue";
-import Opportunities from "@/components/pages/Opportunities.vue";
+
 import { reactive } from "vue";
 import Login from "@/components/admin/Login.vue";
 import DashBoard from "@/components/admin/DashBoard.vue";
@@ -14,39 +11,7 @@ const scrollPositions = reactive({});
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: HomePage,
-  },
-  {
-    path: "/airdrops",
-    name: "Airdrops",
-    component: AirdropDetail,
-  },
-  {
-    path: "/airdrops/:id",
-    name: "AirdropDetail",
-    component: AirdropDetail,
-    props: true,
-  },
-  {
-    path: "/tool",
-    name: "Tool",
-    component: Tools,
-  },
-  {
-    path: "/tools",
-    name: "Tools",
-    component: Tools,
-  },
-  {
-    path: "/tools/:id",
-    name: "ToolDetail",
-    component: () => import("../components/pages/ToolDetail.vue"),
-  },
-  {
-    path: "/pricing",
-    name: "Pricing",
-    component: Pricing,
+    redirect: "/news",
   },
   {
     path: "/news",
@@ -72,18 +37,6 @@ const routes = [
     path: "/about",
     name: "About",
     component: HomePage,
-  },
-  {
-    path: "/opportunities",
-    name: "Opportunities",
-    component: Opportunities,
-    children: [
-      {
-        name: "DetailAirdrop",
-        path: "detail/:id",
-        component: AirdropDetail,
-      },
-    ],
   },
   {
     path: "/watchlist",

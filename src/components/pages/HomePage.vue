@@ -35,14 +35,14 @@
         </p>
 
         <div class="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <button @click="router.push('/pricing')"
+<!-- <button @click="router.push('/pricing')"
             class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-cyan-500/25 hover:-translate-y-1 transition-all duration-300">
             Tham gia Private
-          </button>
-          <button @click="scrollToSection('free-tools')"
+          </button> -->
+<!-- <button @click="scrollToSection('free-tools')"
             class="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-xl font-bold hover:bg-white/10 hover:-translate-y-1 transition-all duration-300 backdrop-blur-md">
             Khám phá công cụ miễn phí
-          </button>
+          </button> -->
         </div>
 
         <div
@@ -76,7 +76,7 @@
       </div>
     </section>
 
-    <section class="bg-[#020617] py-20 px-6 relative">
+<!-- <section class="bg-[#020617] py-20 px-6 relative">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -104,7 +104,6 @@
             @click="router.push({ name: 'DetailAirdrop', params: { id: airdrop.id } })"
             class="bg-[#0f172a] border border-white/5 p-6 rounded-3xl hover:border-cyan-500/40 transition-all duration-300 group relative flex flex-col h-full cursor-pointer shadow-xl">
 
-            <!-- Status Badge -->
             <div class="absolute top-6 right-6">
               <span :class="[
                 'px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border flex items-center gap-1.5',
@@ -118,7 +117,6 @@
               </span>
             </div>
 
-            <!-- Header -->
             <div class="flex items-center gap-4 mb-6">
               <div
                 class="w-14 h-14 bg-[#1e293b] rounded-2xl flex items-center justify-center border border-white/5 shrink-0 group-hover:scale-105 transition-transform overflow-hidden shadow-inner">
@@ -150,7 +148,6 @@
               </div>
             </div>
 
-            <!-- Featured Backers -->
             <div class="mb-6 flex-1">
               <div class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-2">Featured Backers:</div>
               <div class="flex flex-wrap gap-1.5">
@@ -185,8 +182,8 @@
           </a>
         </div>
       </div>
-    </section>
-    <section class="bg-[#0f172a] border-y border-white/5 py-24 px-6 relative overflow-hidden">
+    </section> -->
+<!-- <section class="bg-[#0f172a] border-y border-white/5 py-24 px-6 relative overflow-hidden">
       <div
         class="absolute top-0 right-0 w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-[120px] -z-10 pointer-events-none mix-blend-screen">
       </div>
@@ -268,9 +265,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <section id="free-tools" class="bg-[#020617] py-24 px-6 relative border-t border-white/5">
+<!-- <section id="free-tools" class="bg-[#020617] py-24 px-6 relative border-t border-white/5">
       <div
         class="absolute top-1/2 left-0 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[120px] -z-10 pointer-events-none">
       </div>
@@ -383,9 +380,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
-    <section id="pricing" class="py-24 bg-[#020617]">
+<!-- <section id="pricing" class="py-24 bg-[#020617]">
       <div class="w-full max-w-7xl mx-auto px-6">
         <header class="text-center mb-12">
           <h2 class="text-4xl sm:text-5xl font-extrabold w-full text-center text-white">
@@ -468,7 +465,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="relative py-24 bg-[#0A1226] text-slate-200 overflow-hidden">
       <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
@@ -512,9 +509,9 @@
 </template>
 
 <script setup>
-import benefit from '@/service/benefit'
-import tool from '@/service/tool'
-import productService from '@/service/product'
+// import benefit from '@/service/benefit'
+// import tool from '@/service/tool'
+// import productService from '@/service/product'
 import subscriberService from '@/service/subscriber'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -589,38 +586,38 @@ onMounted(async () => {
 })
 
 async function loadData() {
-  await loadBenefit();
+  // await loadBenefit();
   // await loadHuntingTiers();
-  await loadTool();
-  await loadAirdrops();
-  await loadTotalCount();
+  // await loadTool();
+  // await loadAirdrops();
+  // await loadTotalCount();
 }
 
-async function loadTotalCount() {
-  try {
-    const total = await productService.getTotal();
-    if (total) {
-      totalAirdrops.value = total;
-      // Update stats
-      stats.value[1].value = `${total}+`;
-      // Update pricing - note: pricingPlans is ref now so we can update it
-      pricingPlans.value[1].features[1] = `Truy cập tất cả ${total}+ airdrop`;
-    }
-  } catch (e) {
-    console.error("Failed to load total count", e)
-  }
-}
+// async function loadTotalCount() {
+//   try {
+//     const total = await productService.getTotal();
+//     if (total) {
+//       totalAirdrops.value = total;
+//       // Update stats
+//       stats.value[1].value = `${total}+`;
+//       // Update pricing - note: pricingPlans is ref now so we can update it
+//       pricingPlans.value[1].features[1] = `Truy cập tất cả ${total}+ airdrop`;
+//     }
+//   } catch (e) {
+//     console.error("Failed to load total count", e)
+//   }
+// }
 
-async function loadAirdrops() {
-  try {
-    const data = await productService.getTop(3);
-    if (data) {
-      airdrops.value = data
-    }
-  } catch (e) {
-    console.error("Failed to load airdrops", e)
-  }
-}
+// async function loadAirdrops() {
+//   try {
+//     const data = await productService.getTop(3);
+//     if (data) {
+//       airdrops.value = data
+//     }
+//   } catch (e) {
+//     console.error("Failed to load airdrops", e)
+//   }
+// }
 
 function formatTime(deadline) {
   if (!deadline) return 'TBA'
@@ -646,17 +643,17 @@ const formatPrice = (value) => {
   return strValue.startsWith('$') ? strValue : `$${strValue}`;
 }
 
-async function loadBenefit() {
-  const data = await benefit.getAll();
-  benefits.value = data;
-}
+// async function loadBenefit() {
+//   const data = await benefit.getAll();
+//   benefits.value = data;
+// }
 
-async function loadTool() {
-  const freeTool = await tool.getTop(3);
-  const powerfulTool = await tool.getTop(3, 'powerful');
-  tools.value = { free: freeTool, powerful: powerfulTool };
-  console.log(tools)
-}
+// async function loadTool() {
+//   const freeTool = await tool.getTop(3);
+//   const powerfulTool = await tool.getTop(3, 'powerful');
+//   tools.value = { free: freeTool, powerful: powerfulTool };
+//   console.log(tools)
+// }
 
 const handleSubscribe = async () => {
   if (email.value) {

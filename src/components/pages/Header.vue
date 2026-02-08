@@ -14,81 +14,12 @@
 
       <!-- Desktop Menu -->
       <ul class="nav_menu hidden md:flex">
-        <li>
-          <RouterLink to="/">Trang chủ</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/opportunities">Airdrops</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/tool">Công cụ</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/news">Tin tức</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/pricing">Bảng giá</RouterLink>
-        </li>
-      </ul>
-
-      <ul class="nav_func flex items-center gap-4">
-        <li class="hidden sm:block">
-          <i class="pi pi-search text-white"></i>
-        </li>
-        <!-- <li class="hidden sm:block">
-          <i class="pi pi-moon text-white"></i>
-        </li> -->
-        <li v-if="!authStore.user">
-          <button class="btn_log px-4 py-2 bg-blue-600 rounded-lg text-white font-bold text-sm"
-            @click="handleLogin">Đăng nhập / Đăng ký</button>
-        </li>
-        <li v-else class="relative" ref="menuRef">
-          <button @click="toggleUserMenu" class="flex items-center gap-2 focus:outline-none group">
-            <div class="w-9 h-9 rounded-full flex items-center justify-center transition-all bg-cyan-500/10 border"
-              :class="isAdminOrPremium ? 'border-amber-400/50 bg-amber-400/10' : 'border-cyan-500/20 group-hover:bg-cyan-500/20 group-hover:border-cyan-500/50'">
-              <span :class="isAdminOrPremium ? 'text-amber-400' : 'text-cyan-400'" class="font-bold"
-                v-if="authStore.user.username || authStore.user.firstName">
-                {{ (authStore.user.username || authStore.user.firstName).charAt(0).toUpperCase() }}
-              </span>
-              <i v-else class="pi pi-user text-cyan-400"></i>
-            </div>
-          </button>
-
-          <!-- Dropdown Menu -->
-          <div v-show="showUserMenu"
-            class="absolute right-0 mt-3 w-64 bg-[#0f172a] border border-white/10 rounded-2xl shadow-xl py-2 z-50 overflow-hidden ring-1 ring-white/5"
-            style="top: 100%;">
-            <div class="px-4 py-3 border-b border-white/5 bg-white/5">
-              <div class="flex items-center justify-between mb-1">
-                <p class="text-sm font-bold text-white truncate max-w-[120px]">{{ authStore.user.username ||
-                  authStore.user.firstName }}</p>
-                <span v-if="isAdminOrPremium"
-                  class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/20">
-                  {{ authStore.user.role === 'admin' ? 'Admin' : 'Premium' }}
-                </span>
-                <span v-else
-                  class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-700 text-slate-400 border border-slate-600">
-                  Basic
-                </span>
-              </div>
-              <p class="text-xs text-slate-400 truncate">{{ authStore.user.email }}</p>
-            </div>
-
-            <div class="py-1">
-              <RouterLink to="/watchlist"
-                class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-cyan-400 transition-colors"
-                @click="showUserMenu = false">
-                <i class="pi pi-bookmark text-cyan-500/70"></i> Theo dõi
-              </RouterLink>
-            </div>
-
-            <div class="border-t border-white/5 pt-1">
-              <button @click="handleLogout"
-                class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-500/10 transition-colors text-left">
-                <i class="pi pi-sign-out"></i> Đăng xuất
-              </button>
-            </div>
-          </div>
+        <li v-for="topic in trendingTopics" :key="topic">
+          <RouterLink :to="{ path: '/news', query: { tag: topic } }"
+            :class="[route.query.tag === topic ? 'text-[#2563eb] font-bold' : 'text-white hover:text-[#2563eb]']"
+            class="transition-colors">
+            {{ topic }}
+          </RouterLink>
         </li>
       </ul>
     </nav>
@@ -101,22 +32,19 @@
           <RouterLink to="/" @click="isMobileMenuOpen = false"
             class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Trang chủ</RouterLink>
         </li>
-        <li>
-          <RouterLink to="/opportunities" @click="isMobileMenuOpen = false"
-            class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Cơ hội</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/tool" @click="isMobileMenuOpen = false"
-            class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Công cụ</RouterLink>
-        </li>
+
         <li>
           <RouterLink to="/news" @click="isMobileMenuOpen = false"
             class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Tin tức</RouterLink>
         </li>
-        <li>
-          <RouterLink to="/pricing" @click="isMobileMenuOpen = false"
-            class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Bảng giá</RouterLink>
+        <li v-for="topic in trendingTopics" :key="topic">
+          <RouterLink :to="{ path: '/news', query: { tag: topic } }" @click="isMobileMenuOpen = false"
+            :class="[route.query.tag === topic ? 'text-cyan-400 font-bold' : 'text-slate-300 hover:text-cyan-400']"
+            class="block py-2 border-b border-white/5 transition-colors">
+            {{ topic }}
+          </RouterLink>
         </li>
+
       </ul>
     </div>
   </header>
@@ -125,13 +53,17 @@
 
 
 <script setup>
-import { defineEmits, ref, onMounted, onUnmounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { defineEmits, ref, onMounted, onUnmounted, computed } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import SettingsService from '@/service/settings'
-import { computed } from 'vue'
+import { useNewsStore } from '@/stores/news'
+import { storeToRefs } from 'pinia'
 
 const authStore = useAuthStore()
+const newsStore = useNewsStore()
+const { trendingTopics } = storeToRefs(newsStore)
+
 const emit = defineEmits(['navigate', 'search', 'toggle-theme', 'user', 'login'])
 
 const isAdminOrPremium = computed(() => {
@@ -144,6 +76,8 @@ const siteSettings = ref({
   logoUrl: '',
   socialLinks: {}
 })
+
+const route = useRoute()
 
 // ... (keep emit functions) ...
 const navigate = (page) => {
@@ -207,6 +141,7 @@ const fetchSettings = async () => {
 onMounted(() => {
   document.addEventListener('click', closeUserMenu)
   fetchSettings()
+  newsStore.fetchTrendingTopics()
 })
 
 
@@ -230,7 +165,8 @@ header {
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-start;
+  gap: 10rem;
   padding: 1rem 2rem;
   max-width: 100%;
 }
@@ -262,17 +198,13 @@ header {
 }
 
 .nav_menu li a {
-  color: #a0b0d7;
+  text-transform: uppercase;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
   transition: color 0.3s;
 }
 
-.nav_menu li a:hover,
-.nav_menu li a.router-link-active {
-  color: #3b82f6;
-}
 
 .nav_func {
   display: flex;

@@ -13,11 +13,11 @@
                     </span>
                 </h1>
                 <p class="text-lg text-slate-400 max-w-3xl leading-relaxed mb-8">
-                    Cập nhật tin tức mới nhất về tiền điện tử, phân tích thị trường và công nghệ blockchain.
+                    Stay updated with the latest news on cryptocurrency, market analysis, and blockchain technology.
                 </p>
 
                 <!-- Trending Topics -->
-                <div class="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+                <!-- <div class="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
                     <span class="text-orange-500 font-bold flex items-center gap-1 min-w-fit">
                         <i class="pi pi-bolt"></i> Xu hướng:
                     </span>
@@ -26,7 +26,7 @@
                         :class="selectedTag === topic ? 'bg-cyan-500 text-[#020617] border-cyan-500 font-bold' : 'bg-[#1e293b] border-white/10 text-slate-300 hover:text-white hover:border-cyan-500/50 hover:bg-[#0f172a]'">
                         #{{ topic }}
                     </button>
-                </div>
+                </div> -->
             </div>
         </header>
 
@@ -34,9 +34,9 @@
             <div class="max-w-7xl mx-auto space-y-12">
 
                 <!-- Featured Stories -->
-                <section>
+                <section v-if="!route.query.tag">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-white">Tin nổi bật</h2>
+                        <h2 class="text-2xl font-bold text-white">Featured Stories</h2>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <template v-if="isLoading">
@@ -103,6 +103,7 @@
                         </article>
                     </div>
                 </section>
+                
 
                 <div class="flex flex-col lg:flex-row gap-8">
 
@@ -110,17 +111,17 @@
                     <aside class="w-full lg:w-72 shrink-0">
                         <div class="bg-[#0f172a] border border-white/5 rounded-3xl p-6 sticky top-24">
                             <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-lg font-bold text-white">Bộ lọc</h3>
+                                <h3 class="text-lg font-bold text-white">Filters</h3>
                             </div>
 
                             <div class="mb-6 p-4 bg-[#1e293b] rounded-xl border border-white/5 text-center">
                                 <span class="block text-3xl font-bold text-cyan-400 mb-1">{{ totalNews }}</span>
-                                <span class="text-xs text-slate-400 uppercase tracking-widest font-bold">Bài viết</span>
+                                <span class="text-xs text-slate-400 uppercase tracking-widest font-bold">Articles</span>
                             </div>
 
                             <!-- Categories -->
                             <div class="mb-8">
-                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Danh mục</h4>
+                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Categories</h4>
                                 <div class="space-y-3">
                                     <label v-for="cat in categories" :key="cat.name"
                                         class="flex items-center gap-3 cursor-pointer group">
@@ -138,7 +139,7 @@
 
                             <!-- Time Range -->
                             <div class="mb-8">
-                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Thời gian
+                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Time
                                 </h4>
                                 <div class="space-y-3">
                                     <label v-for="time in timeRanges" :key="time.value"
@@ -159,13 +160,13 @@
 
                             <!-- Sort -->
                             <div class="mb-8">
-                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Sắp xếp</h4>
+                                <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Sort by</h4>
                                 <div class="relative">
                                     <select v-model="sortBy"
                                         class="w-full bg-[#020617] border border-slate-700 text-slate-300 text-sm rounded-xl px-4 py-3 appearance-none focus:outline-none focus:border-cyan-500 transition-colors cursor-pointer">
-                                        <option value="latest">Mới nhất</option>
-                                        <option value="popular">Phổ biến nhất</option>
-                                        <option value="oldest">Cũ nhất</option>
+                                        <option value="latest">Newest</option>
+                                        <option value="popular">Most Popular</option>
+                                        <option value="oldest">Oldest</option>
                                     </select>
                                     <i
                                         class="pi pi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-xs"></i>
@@ -177,10 +178,9 @@
                                 class="bg-gradient-to-br from-cyan-900/20 to-blue-900/20 rounded-2xl p-5 border border-cyan-500/20">
                                 <div class="flex items-center gap-2 mb-3">
                                     <i class="pi pi-bell text-cyan-400"></i>
-                                    <span class="text-sm font-bold text-white">Đừng bỏ lỡ</span>
+                                    <span class="text-sm font-bold text-white">Don't miss out</span>
                                 </div>
-                                <p class="text-xs text-slate-400 mb-4 leading-relaxed">Nhận tin tức nóng hổi được gửi
-                                    trực tiếp đến hộp thư của bạn.</p>
+                                <p class="text-xs text-slate-400 mb-4 leading-relaxed">Get the hottest news sent directly to your inbox.</p>
                             </div>
 
                         </div>
@@ -192,13 +192,12 @@
                         <div class="mb-8 relative group">
                             <i
                                 class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500 group-focus-within:text-cyan-400 transition-colors"></i>
-                            <input v-model="searchQuery" type="text" placeholder="Tìm kiếm bài viết..."
+                            <input v-model="searchQuery" type="text" placeholder="Search articles..."
                                 class="w-full bg-[#0f172a] border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all" />
                         </div>
 
                         <div class="flex items-center justify-between mb-6">
-                            <span class="text-sm text-slate-400">Hiển thị {{ newsList.length }} / {{ totalNews }} bài
-                                viết</span>
+                            <span class="text-sm text-slate-400">Showing {{ newsList.length }} / {{ totalNews }} articles</span>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -296,10 +295,13 @@ import NewsService from '@/service/news';
 import CategoryService from '@/service/category';
 import { useRouter, useRoute } from 'vue-router';
 import Footer from './Footer.vue';
+import { useNewsStore } from '@/stores/news';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const route = useRoute();
-const trendingTopics = ref([]);
+const newsStore = useNewsStore();
+const { trendingTopics } = storeToRefs(newsStore);
 
 const selectedCategories = ref([]);
 const categories = ref([]);
@@ -307,10 +309,10 @@ const selectedTag = ref(route.query.tag || null);
 
 const selectedTimeRange = ref('all');
 const timeRanges = [
-    { label: 'Tất cả thời gian', value: 'all' },
-    { label: 'Hôm nay', value: 'today' },
-    { label: 'Tuần này', value: 'week' },
-    { label: 'Tháng này', value: 'month' }
+    { label: 'All time', value: 'all' },
+    { label: 'Today', value: 'today' },
+    { label: 'This week', value: 'week' },
+    { label: 'This month', value: 'month' }
 ];
 
 const sortBy = ref('latest');
@@ -336,10 +338,7 @@ async function loadData() {
         }
 
         // Load Trending Topics (Tags)
-        const tagsRes = await NewsService.getTags();
-        if (tagsRes.success) {
-            trendingTopics.value = tagsRes.data;
-        }
+        newsStore.fetchTrendingTopics();
 
         // Load Categories
         const catRes = await CategoryService.getAll({ type: 'news' });
