@@ -77,7 +77,7 @@
                                     <div class="flex items-center gap-4 text-xs text-slate-300">
                                         <span><i class="pi pi-clock mr-1"></i>{{ featuredStories[0].readTime }}</span>
                                         <span><i class="pi pi-calendar mr-1"></i>{{ featuredStories[0].date }}</span>
-                                        <span><i class="pi pi-eye mr-1"></i>{{ featuredStories[0].views }}</span>
+                                        <!-- <span><i class="pi pi-eye mr-1"></i>{{ featuredStories[0].views }}</span> -->
                                     </div>
                                 </div>
                             </article>
@@ -175,11 +175,11 @@
                                 <button v-if="hasActiveFilters" @click="clearFilters"
                                     class="text-xs text-slate-500 hover:text-cyan-400 transition-colors">Clear</button>
                             </div>
-                            <div class="mb-4 md:mb-6 p-4 rounded-xl bg-slate-800/50 border border-white/5 text-center">
+                            <!-- <div class="mb-4 md:mb-6 p-4 rounded-xl bg-slate-800/50 border border-white/5 text-center">
                                 <span class="block text-2xl font-bold text-cyan-400 tabular-nums">{{ totalNews }}</span>
                                 <span
                                     class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Articles</span>
-                            </div>
+                            </div> -->
                             <div class="space-y-6">
                                 <!-- <div>
                                     <h4

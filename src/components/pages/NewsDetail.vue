@@ -57,10 +57,10 @@
                         <i class="pi pi-clock text-cyan-500"></i>
                         <span>{{ news.readTime }}</span>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <!-- <div class="flex items-center gap-2">
                         <i class="pi pi-eye text-cyan-500"></i>
                         <span>{{ news.views }} views</span>
-                    </div>
+                    </div> -->
                 </div>
             </header>
 
