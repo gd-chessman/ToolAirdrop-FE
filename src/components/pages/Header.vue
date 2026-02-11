@@ -1,52 +1,74 @@
 <template>
-  <header>
-    <nav class="navbar">
-      <div class="nav_logo">
-        <img :src="siteSettings.logoUrl || '/src/assets/logocipher43.png'"
-          style="width: 40px; height: 40px; border-radius: 8px;" alt="Logo">
-        <RouterLink to="/" class="title_brand">{{ siteSettings.siteName }}</RouterLink>
-      </div>
+  <header class="header shadow-lg">
+    <div class="header-inner">
+      <!-- Logo -->
+      <RouterLink to="/" class="logo">
+        <img :src="siteSettings.logoUrl || '/src/assets/logocipher43.png'" alt="Logo" class="logo-img" />
+        <span class="logo-text">{{ siteSettings.siteName }}</span>
+      </RouterLink>
 
-      <!-- Mobile Menu Button -->
-      <button @click="toggleMobileMenu" class="md:hidden text-white p-2">
-        <i :class="isMobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" class="text-xl"></i>
+      <!-- Desktop Nav -->
+      <nav class="nav-desktop">
+        <template v-for="topic in visibleTopics" :key="topic">
+          <RouterLink
+            :to="{ path: '/news', query: { tag: topic } }"
+            class="nav-link nav-link--tag"
+            :class="{ 'nav-link--active': route.path === '/news' && route.query.tag === topic }"
+          >
+            {{ topic }}
+          </RouterLink>
+        </template>
+        <!-- Dropdown Xem thêm (chỉ topic từ thứ 6 trở đi) -->
+        <div v-if="remainingTopics.length > 0" ref="topicsDropdownRef" class="nav-more-wrap">
+          <button type="button" class="nav-link nav-link--more" :class="{ 'nav-link--active': showTopicsDropdown }"
+            @click.stop="showTopicsDropdown = !showTopicsDropdown" aria-haspopup="true" :aria-expanded="showTopicsDropdown">
+            More
+            <i class="pi pi-chevron-down nav-more-chevron" :class="{ 'nav-more-chevron--open': showTopicsDropdown }"></i>
+          </button>
+          <Transition name="dropdown">
+            <div v-show="showTopicsDropdown" class="nav-dropdown">
+              <div class="nav-dropdown-inner">
+                <RouterLink
+                  v-for="topic in remainingTopics"
+                  :key="topic"
+                  :to="{ path: '/news', query: { tag: topic } }"
+                  class="nav-dropdown-link"
+                  :class="{ 'nav-dropdown-link--active': route.query.tag === topic }"
+                  @click="showTopicsDropdown = false"
+                >
+                  {{ topic }}
+                </RouterLink>
+              </div>
+            </div>
+          </Transition>
+        </div>
+      </nav>
+
+      <!-- Mobile Menu Toggle -->
+      <button type="button" @click="toggleMobileMenu" class="menu-toggle" aria-label="Menu">
+        <i :class="isMobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" class="menu-toggle-icon"></i>
       </button>
-
-      <!-- Desktop Menu -->
-      <ul class="nav_menu hidden md:flex">
-        <li v-for="topic in trendingTopics" :key="topic">
-          <RouterLink :to="{ path: '/news', query: { tag: topic } }"
-            :class="[route.query.tag === topic ? 'text-[#2563eb] font-bold' : 'text-white hover:text-[#2563eb]']"
-            class="transition-colors">
-            {{ topic }}
-          </RouterLink>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Mobile Navigation Menu -->
-    <div v-show="isMobileMenuOpen"
-      class="md:hidden bg-[#0f172a] border-t border-white/10 absolute w-full left-0 animate-fade-in-down z-40">
-      <ul class="flex flex-col p-4 space-y-4">
-        <li>
-          <RouterLink to="/" @click="isMobileMenuOpen = false"
-            class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Trang chủ</RouterLink>
-        </li>
-
-        <li>
-          <RouterLink to="/news" @click="isMobileMenuOpen = false"
-            class="block text-slate-300 hover:text-cyan-400 py-2 border-b border-white/5">Tin tức</RouterLink>
-        </li>
-        <li v-for="topic in trendingTopics" :key="topic">
-          <RouterLink :to="{ path: '/news', query: { tag: topic } }" @click="isMobileMenuOpen = false"
-            :class="[route.query.tag === topic ? 'text-cyan-400 font-bold' : 'text-slate-300 hover:text-cyan-400']"
-            class="block py-2 border-b border-white/5 transition-colors">
-            {{ topic }}
-          </RouterLink>
-        </li>
-
-      </ul>
     </div>
+
+    <!-- Mobile Menu -->
+    <Transition name="mobile-menu">
+      <div v-show="isMobileMenuOpen" class="nav-mobile">
+        <div class="nav-mobile-inner">
+          <div v-if="trendingTopics.length" class="nav-mobile-section">
+            <RouterLink
+              v-for="topic in trendingTopics.slice(0, 5)"
+              :key="topic"
+              :to="{ path: '/news', query: { tag: topic } }"
+              @click="isMobileMenuOpen = false"
+              class="nav-mobile-link"
+              :class="{ 'nav-mobile-link--active': route.query.tag === topic }"
+            >
+              <i class="pi pi-bolt text-amber-500/80 mr-3 text-xs"></i> {{ topic }}
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </header>
 </template>
 
@@ -78,6 +100,17 @@ const siteSettings = ref({
 })
 
 const route = useRoute()
+
+const visibleTopics = computed(() => trendingTopics.value.slice(0, 5))
+const remainingTopics = computed(() => trendingTopics.value.slice(5))
+const showTopicsDropdown = ref(false)
+const topicsDropdownRef = ref(null)
+
+const closeTopicsDropdown = (event) => {
+  if (topicsDropdownRef.value && !topicsDropdownRef.value.contains(event.target)) {
+    showTopicsDropdown.value = false
+  }
+}
 
 // ... (keep emit functions) ...
 const navigate = (page) => {
@@ -140,145 +173,288 @@ const fetchSettings = async () => {
 
 onMounted(() => {
   document.addEventListener('click', closeUserMenu)
+  document.addEventListener('click', closeTopicsDropdown)
   fetchSettings()
   newsStore.fetchTrendingTopics()
 })
 
-
 onUnmounted(() => {
   document.removeEventListener('click', closeUserMenu)
+  document.removeEventListener('click', closeTopicsDropdown)
 })
 </script>
 
 <style scoped>
-header {
+.header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 50;
-  background-color: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #5827ae;
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.navbar {
+.header-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 4rem;
   display: flex;
   align-items: center;
-  justify-content: space-start;
-  gap: 10rem;
-  padding: 1rem 2rem;
-  max-width: 100%;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
-.nav_logo {
+@media (min-width: 768px) {
+  .header-inner {
+    padding: 0 1.5rem;
+    height: 4.5rem;
+  }
+}
+
+/* Logo */
+.logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.title_brand {
-  font-size: 1.4rem;
+  text-decoration: none;
+  color: #fff;
   font-weight: 700;
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
+  font-size: 1.125rem;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
 }
 
-.title_brand:hover {
-  color: #3b82f6;
+.logo:hover {
+  color: rgb(34 211 238);
 }
 
-.nav_menu {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  margin: 0;
-  padding: 0;
+.logo-img {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.nav_menu li a {
-  text-transform: uppercase;
-  text-decoration: none;
-  font-size: 1rem;
+.logo-text {
+  white-space: nowrap;
+}
+
+/* Desktop nav */
+.nav-desktop {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .nav-desktop {
+    display: flex;
+  }
+}
+
+.nav-link {
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  transition: color 0.3s;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
 }
 
+.nav-link:hover {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.1);
+}
 
-.nav_func {
+.nav-link--active {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.1);
+}
+
+.nav-link--tag {
+  font-size: 0.8125rem;
+  text-transform: capitalize;
+}
+
+/* Xem thêm dropdown */
+.nav-more-wrap {
+  position: relative;
+}
+
+.nav-link--more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-more-chevron {
+  font-size: 0.65rem;
+  transition: transform 0.2s ease;
+}
+
+.nav-more-chevron--open {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  min-width: 13rem;
+  max-height: 20rem;
+  overflow-y: auto;
+  background: #5827ae;
+  backdrop-filter: blur(12px);
+  border-radius: 0.75rem;
+  z-index: 60;
+}
+
+.nav-dropdown-inner {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+}
+
+.nav-dropdown-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  text-transform: capitalize;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.nav-dropdown-link:hover {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.08);
+}
+
+.nav-dropdown-link--active {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.12);
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* Mobile toggle */
+.menu-toggle {
   display: flex;
   align-items: center;
-  list-style: none;
-  gap: 1rem;
-  margin: 0;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+@media (min-width: 768px) {
+  .menu-toggle {
+    display: none;
+  }
+}
+
+.menu-toggle-icon {
+  font-size: 1.25rem;
+}
+
+/* Mobile menu */
+.nav-mobile {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #5827ae;
+  backdrop-filter: blur(16px);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-mobile-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0rem 0.5rem;
+}
+
+.nav-mobile-section {
   padding: 0;
 }
 
-.nav_func li {
-  cursor: pointer;
+.nav-mobile-section:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.nav_func img {
-  width: 20px;
-  height: 20px;
-  opacity: 0.7;
-  transition: opacity 0.3s;
+.nav-mobile-label {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
 }
 
-.nav_func img:hover {
-  opacity: 1;
+.nav-mobile-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: rgb(203 213 225);
+  text-decoration: none;
+  transition: color 0.2s, background-color 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn_log {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.nav-mobile-link:hover {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.08);
 }
 
-.btn_log:hover {
-  background-color: #2563eb;
+.nav-mobile-link--active {
+  color: rgb(34 211 238);
+  background-color: rgba(34, 211, 238, 0.12);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .nav_menu {
-    display: none;
-  }
-
-  .navbar {
-    padding: 1rem;
-  }
-
-  .nav_func {
-    gap: 0.5rem;
-  }
-
-  .btn_log {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.75rem;
-  }
+/* Mobile menu transition */
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-down {
-  animation: fade-in-down 0.3s ease-out forwards;
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>

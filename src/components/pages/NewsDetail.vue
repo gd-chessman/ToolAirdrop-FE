@@ -1,19 +1,17 @@
 <template>
-    <div class="min-h-screen bg-[#020617] text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200 pb-20 relative"
-        :style="{
-            fontFamily: `'Roboto', sans-serif`,
-            backgroundImage: `url(${bgNews})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
-            backgroundRepeat: 'no-repeat'
-        }">
-        <!-- Dark Overlay -->
-        <div class="absolute inset-0 bg-black/80 pointer-events-none z-0"></div>
-
-        <!-- Background Effects -->
-        <div
-            class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] z-0 pointer-events-none">
+    <div class="news-detail-page min-h-screen text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-200 relative"
+        :style="{ fontFamily: `'Roboto', sans-serif` }">
+        <!-- Background layers (depth) -->
+        <div class="news-detail-bg" aria-hidden="true">
+            <div class="news-detail-bg-base"></div>
+            <div class="news-detail-bg-image" :style="bgImageStyle"></div>
+            <div class="news-detail-bg-overlay"></div>
+            <div class="news-detail-bg-orb news-detail-bg-orb--1"></div>
+            <div class="news-detail-bg-orb news-detail-bg-orb--2"></div>
+            <div class="news-detail-bg-orb news-detail-bg-orb--3"></div>
+            <div class="news-detail-bg-orb news-detail-bg-orb--4"></div>
+            <div class="news-detail-bg-vignette"></div>
+            <div class="news-detail-bg-grain"></div>
         </div>
 
         <!-- Navigation -->
@@ -26,15 +24,15 @@
         </nav>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="relative z-10 flex justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+        <div v-if="isLoading" class="relative z-10 min-h-svh items-center flex justify-center pt-20">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-black"></div>
         </div>
 
         <!-- Article Content -->
         <article v-else-if="news" class="relative z-10 max-w-4xl mx-auto px-6">
             <!-- Header -->
             <header class="mb-12">
-                <div class="flex items-center gap-3 mb-6">
+                <div class="flex items-center gap-3 mb-4 md:mb-6">
                     <span
                         class="px-3 py-1 rounded bg-[#1e293b] text-cyan-400 border border-cyan-500/20 text-xs font-bold uppercase tracking-wider">
                         {{ news.category }}
@@ -45,12 +43,12 @@
                     </span>
                 </div>
 
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-8 leading-tight">
+                <h1 class="text-2xl md:text-5xl font-extrabold text-white mb-8 leading-tight">
                     {{ news.title }}
                 </h1>
 
                 <!-- Metadata -->
-                <div class="flex flex-wrap items-center gap-6 py-6 border-y border-white/10 text-sm text-slate-400">
+                <div class="flex flex-wrap items-center gap-6 px-4 py-2 bg-slate-800/50 text-sm text-slate-400">
                     <div class="flex items-center gap-2">
                         <i class="pi pi-calendar text-cyan-500"></i>
                         <span>{{ news.date }}</span>
@@ -119,7 +117,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import NewsService from '@/service/news';
 import Footer from './Footer.vue';
@@ -129,6 +127,13 @@ const route = useRoute();
 const router = useRouter();
 const news = ref(null);
 const isLoading = ref(true);
+
+const bgImageStyle = computed(() => ({
+    backgroundImage: `url(${bgNews})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+}));
 
 const handleTagClick = (tag) => {
     router.push({ path: '/news', query: { tag: tag } });
@@ -186,6 +191,95 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* Page background with depth layers */
+.news-detail-page {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #5317b4 0%, #8b5cf6 35%, #8859b8 60%, #e5b2ca 100%);
+}
+
+.news-detail-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.news-detail-bg-base {
+    position: absolute;
+    inset: 0;
+    
+}
+
+.news-detail-bg-image {
+    position: absolute;
+    inset: 0;
+}
+
+.news-detail-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.news-detail-bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.45;
+    will-change: transform;
+}
+
+.news-detail-bg-orb--1 {
+    width: 60vmin;
+    height: 60vmin;
+    top: -15%;
+    left: -10%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(196, 181, 253, 0.35) 40%, transparent 70%);
+}
+
+.news-detail-bg-orb--2 {
+    width: 50vmin;
+    height: 50vmin;
+    top: 30%;
+    right: -15%;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(244, 114, 182, 0.18) 50%, transparent 70%);
+}
+
+.news-detail-bg-orb--3 {
+    width: 45vmin;
+    height: 45vmin;
+    bottom: -10%;
+    left: 20%;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.25) 0%, rgba(196, 181, 253, 0.12) 50%, transparent 70%);
+}
+
+.news-detail-bg-orb--4 {
+    width: 40vmin;
+    height: 40vmin;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    filter: blur(60px);
+    opacity: 0.7;
+}
+
+.news-detail-bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 25%, rgba(0, 0, 0, 0.2) 65%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.news-detail-bg-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
 /* Custom prose styling overrides if needed */
 .prose img {
     border-radius: 1rem;

@@ -1,14 +1,13 @@
 <template>
-    <footer class="mt-16 bg-[#020617] text-slate-400 border-t border-white/5 py-16">
+    <footer class="mt-16 bg-[#a272bd] text-slate-400 border-t border-white/5 py-16">
         <div class="w-full max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
+            <div class="flex flex-col items-start justify-start">
                     <div class="flex items-center gap-3 mb-6">
                         <img :src="siteSettings.logoUrl || '/src/assets/logocipher43.png'" alt="Logo"
                             class="h-10 w-10 rounded-xl bg-cyan-500/10 object-cover" />
                         <span class="font-bold text-xl text-white">{{ siteSettings.siteName || 'Cipher 43 Lab' }}</span>
                     </div>
-                    <p class="text-sm leading-relaxed mb-6">
+                    <p class="text-sm leading-relaxed mb-6 text-slate-300">
                         {{ siteSettings.footerDescription || defaultFooterDescription }}
                     </p>
                     <div class="flex gap-4">
@@ -27,60 +26,14 @@
                         <a v-if="socialLinks.youtube" :href="socialLinks.youtube" target="_blank"
                             class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-cyan-500 hover:text-[#020617] transition-all"><i
                                 class="pi pi-youtube"></i></a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-white mb-6">Product</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><router-link :to="footerLinks.airdrops"
-                                class="hover:text-cyan-400 transition-colors">Airdrops</router-link></li>
-                        <li><router-link :to="footerLinks.tools"
-                                class="hover:text-cyan-400 transition-colors">Tools</router-link>
-                        </li>
-                        <li><router-link :to="footerLinks.news"
-                                class="hover:text-cyan-400 transition-colors">News</router-link>
-                        </li>
-                        <li><router-link :to="footerLinks.pricing"
-                                class="hover:text-cyan-400 transition-colors">Pricing</router-link></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-white mb-6">Company</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><router-link :to="footerLinks.about"
-                                class="hover:text-cyan-400 transition-colors">About</router-link></li>
-                        <li><router-link :to="footerLinks.blog"
-                                class="hover:text-cyan-400 transition-colors">Blog</router-link>
-                        </li>
-                        <li><router-link :to="footerLinks.careers"
-                                class="hover:text-cyan-400 transition-colors">Careers</router-link></li>
-                        <li><router-link :to="footerLinks.contact"
-                                class="hover:text-cyan-400 transition-colors">Contact</router-link></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-white mb-6">Legal</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><router-link :to="footerLinks.privacyPolicy"
-                                class="hover:text-cyan-400 transition-colors">Privacy Policy</router-link></li>
-                        <li><router-link :to="footerLinks.termsOfService"
-                                class="hover:text-cyan-400 transition-colors">Terms of Service</router-link></li>
-                        <li><router-link :to="footerLinks.cookiePolicy"
-                                class="hover:text-cyan-400 transition-colors">Cookie Policy</router-link></li>
-                        <li><router-link :to="footerLinks.security"
-                                class="hover:text-cyan-400 transition-colors">Security</router-link></li>
-                    </ul>
                 </div>
             </div>
 
             <div
-                class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
-                <p>{{ siteSettings.footerCopyright || '© 2025 Cipher 43 Lab. Đã đăng ký bản quyền.' }}</p>
+                class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-300">
+                <p>{{ siteSettings.footerCopyright || '© 2025 Cipher 43 Lab. All rights reserved.' }}</p>
                 <p class="flex items-center gap-1 mt-4 md:mt-0">
-                    Được làm bằng <span class="text-red-500 animate-pulse">❤</span> cho cộng đồng Alan Trương
+                    Made with <span class="text-red-500 animate-pulse">❤</span> for the community
                 </p>
             </div>
         </div>
@@ -91,7 +44,7 @@
 import { ref, onMounted, computed } from 'vue';
 import SettingsService from '@/service/settings';
 
-const defaultFooterDescription = 'Trung tâm tối thượng cho thợ săn airdrop tiền điện tử. Tối đa hóa phần thưởng của bạn với các công cụ hỗ trợ AI.';
+const defaultFooterDescription = 'The ultimate center for crypto airdrop hunters. Maximize your rewards with our AI-powered tools.';
 
 const siteSettings = ref({
     siteName: 'Cipher 43 Lab',
