@@ -8,7 +8,7 @@
                         <span class="font-bold text-xl text-white">{{ siteSettings.siteName || 'Cipher 43 Lab' }}</span>
                     </div>
                     <p class="text-sm leading-relaxed mb-6 text-slate-300">
-                        {{ siteSettings.footerDescription || defaultFooterDescription }}
+                        {{ defaultFooterDescription }}
                     </p>
                     <div class="flex gap-4">
                         <a v-if="socialLinks.twitter" :href="socialLinks.twitter" target="_blank"
