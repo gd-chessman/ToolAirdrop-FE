@@ -11,7 +11,7 @@
             <div class="flex items-center gap-4">
                 <div
                     class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200 relative">
-                    <img :src="form.logoUrl || '/src/assets/logocipher43.png'" class="h-full w-full object-cover">
+                    <img :src="form.logoUrl || '/logocipher43.png'" class="h-full w-full object-cover">
                     <button v-if="form.logoUrl" @click="form.logoUrl = ''"
                         class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-sm hover:bg-red-600">
                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

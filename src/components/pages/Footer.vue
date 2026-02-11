@@ -3,7 +3,7 @@
         <div class="w-full max-w-7xl mx-auto px-6">
             <div class="flex flex-col items-start justify-start">
                     <div class="flex items-center gap-3 mb-6">
-                        <img :src="siteSettings.logoUrl || '/src/assets/logocipher43.png'" alt="Logo"
+                        <img :src="siteSettings.logoUrl || '/logocipher43.png'" alt="Logo"
                             class="h-10 w-10 rounded-xl bg-cyan-500/10 object-cover" />
                         <span class="font-bold text-xl text-white">{{ siteSettings.siteName || 'Cipher 43 Lab' }}</span>
                     </div>

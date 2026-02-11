@@ -3,7 +3,7 @@
     <div class="header-inner">
       <!-- Logo -->
       <RouterLink to="/" class="logo">
-        <img :src="siteSettings.logoUrl || '/src/assets/logocipher43.png'" alt="Logo" class="logo-img" />
+        <img :src="siteSettings.logoUrl || '/logocipher43.png'" alt="Logo" class="logo-img" />
         <span class="logo-text">{{ siteSettings.siteName }}</span>
       </RouterLink>
 
