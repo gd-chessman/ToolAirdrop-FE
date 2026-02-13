@@ -30,13 +30,13 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Tên Website (Logo Text)</label>
-            <input v-model="form.siteName" type="text" placeholder="Cipher 43 Lab"
+            <input v-model="form.siteName" type="text" placeholder="Cryptospoid"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 bg-white">
         </div>
 
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề Trang (Slogan)</label>
-            <input v-model="form.pageTitle" type="text" placeholder="Cipher 43 Lab - Dashboard"
+            <input v-model="form.pageTitle" type="text" placeholder="Cryptospoid - Dashboard"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 bg-white">
         </div>
 
@@ -52,7 +52,7 @@
 
         <div class="col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">Text Copyright</label>
-            <input v-model="form.footerCopyright" type="text" placeholder="© 2025 Cipher 43 Lab..."
+            <input v-model="form.footerCopyright" type="text" placeholder="© 2025 Cryptospoid..."
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-gray-900 bg-white">
         </div>
 

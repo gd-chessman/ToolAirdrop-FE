@@ -10,7 +10,7 @@
           </svg>
         </div>
         <div>
-          <h1 class="font-bold text-gray-800 text-lg tracking-tight">Cipher 43 Lab</h1>
+          <h1 class="font-bold text-gray-800 text-lg tracking-tight">Cryptospoid</h1>
           <p class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Admin Panel</p>
         </div>
       </div>

@@ -16,7 +16,7 @@
         Admin Portal
       </h2>
       <p class="mt-2 text-sm text-gray-600">
-        Sign in to Cipher 43 Lab Control Panel
+        Sign in to Cryptospoid Control Panel
       </p>
     </div>
 

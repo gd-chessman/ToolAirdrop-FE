@@ -12,7 +12,7 @@
 
             <!-- Title -->
             <h1 class="text-3xl font-semibold text-white">Chào mừng trở lại</h1>
-            <p class="text-gray-400 mt-1">Đăng nhập vào tài khoản Cipher 43 Lab của bạn</p>
+            <p class="text-gray-400 mt-1">Đăng nhập vào tài khoản Cryptospoid của bạn</p>
 
             <!-- Tabs -->
             <div class="flex w-full max-w-sm mt-10 bg-[#1E293B] rounded-xl p-1">

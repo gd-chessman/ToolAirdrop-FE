@@ -5,7 +5,7 @@
                     <div class="flex items-center gap-3 mb-6">
                         <img :src="siteSettings.logoUrl || '/logocipher43.png'" alt="Logo"
                             class="h-10 w-10 rounded-xl bg-cyan-500/10 object-cover" />
-                        <span class="font-bold text-xl text-white">{{ siteSettings.siteName || 'Cipher 43 Lab' }}</span>
+                        <span class="font-bold text-xl text-white">{{ siteSettings.siteName || 'Cryptospoid' }}</span>
                     </div>
                     <p class="text-sm leading-relaxed mb-6 text-slate-300">
                         {{ defaultFooterDescription }}
@@ -31,7 +31,7 @@
 
             <div
                 class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-300">
-                <p>{{ siteSettings.footerCopyright || '© 2025 Cipher 43 Lab. All rights reserved.' }}</p>
+                <p>{{ siteSettings.footerCopyright || '© 2025 Cryptospoid. All rights reserved.' }}</p>
                 <p class="flex items-center gap-1 mt-4 md:mt-0">
                     Made with <span class="text-red-500 animate-pulse">❤</span> for the community
                 </p>
@@ -47,7 +47,7 @@ import SettingsService from '@/service/settings';
 const defaultFooterDescription = 'The ultimate center for crypto airdrop hunters. Maximize your rewards with our AI-powered tools.';
 
 const siteSettings = ref({
-    siteName: 'Cipher 43 Lab',
+    siteName: 'Cryptospoid',
     logoUrl: '',
     socialLinks: {
         twitter: '',

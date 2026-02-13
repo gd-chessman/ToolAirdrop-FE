@@ -568,7 +568,7 @@ const pricingPlans = ref([
 
 const quickFaqs = [
   {
-    question: 'Cipher 43 Lab khác biệt như thế nào?',
+    question: 'Cryptospoid khác biệt như thế nào?',
     answer: 'Tự động hóa bằng AI và quy trình kiểm duyệt chuyên gia của chúng tôi đảm bảo bạn chỉ dành thời gian cho các airdrop hợp pháp và có lợi nhuận cao.'
   },
   {

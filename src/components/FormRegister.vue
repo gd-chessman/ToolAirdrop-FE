@@ -12,7 +12,7 @@
 
             <!-- Title -->
             <h1 class="text-3xl font-semibold text-white">Tạo tài khoản</h1>
-            <p class="text-gray-400 mt-1">Tham gia cộng đồng Cipher 43 Lab ngay hôm nay</p>
+            <p class="text-gray-400 mt-1">Tham gia cộng đồng Cryptospoid ngay hôm nay</p>
 
             <!-- Register Card -->
             <div class="w-full max-w-md bg-[#1E293B] p-6 rounded-2xl shadow-xl mt-6">

@@ -4,7 +4,7 @@
       <!-- Logo -->
       <RouterLink to="/" class="logo">
         <img :src="siteSettings.logoUrl || '/logocipher43.png'" alt="Logo" class="logo-img" />
-        <span class="logo-text">{{ siteSettings.siteName }}</span>
+        <span class="logo-text">Cryptospoid</span>
       </RouterLink>
 
       <!-- Desktop Nav -->
@@ -94,7 +94,7 @@ const isAdminOrPremium = computed(() => {
 
 // Site Settings
 const siteSettings = ref({
-  siteName: 'Cipher 43 Lab',
+  siteName: 'Cryptospoid',
   logoUrl: '',
   socialLinks: {}
 })
@@ -218,7 +218,7 @@ onUnmounted(() => {
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.25rem;
   text-decoration: none;
   color: #fff;
   font-weight: 700;
@@ -232,11 +232,10 @@ onUnmounted(() => {
 }
 
 .logo-img {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 0.5rem;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo-text {
